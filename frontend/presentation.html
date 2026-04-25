@@ -1,0 +1,336 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>SmAArt City IoT — Presentation</title>
+<script src="https://cdn.tailwindcss.com"></script>
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; background: #0F172A; overflow: hidden; height: 100vh; }
+
+  .slide { position: absolute; inset: 0; display: flex; flex-direction: column; opacity: 0; pointer-events: none; transition: opacity .35s ease, transform .35s ease; transform: translateX(40px); }
+  .slide.active { opacity: 1; pointer-events: all; transform: translateX(0); }
+  .slide.prev   { transform: translateX(-40px); }
+
+  .slide-dark  { background: #0F172A; color: white; }
+
+  .gradient-text { background: linear-gradient(135deg, #3B82F6, #8B5CF6); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; }
+
+  /* Nav */
+  #nav { position: fixed; bottom: 24px; left: 50%; transform: translateX(-50%); z-index: 100; display: flex; align-items: center; gap: 12px; background: rgba(15,23,42,.85); backdrop-filter: blur(12px); padding: 10px 20px; border-radius: 100px; border: 1px solid rgba(255,255,255,.1); }
+  #nav button { background: none; border: none; color: #94A3B8; cursor: pointer; padding: 6px; border-radius: 50%; transition: all .15s; display: flex; align-items: center; }
+  #nav button:hover { background: rgba(255,255,255,.1); color: white; }
+  #slide-counter { color: #64748B; font-size: 12px; min-width: 36px; text-align: center; }
+
+  /* Dots */
+  #dots { position: fixed; bottom: 28px; right: 32px; z-index: 100; display: flex; gap: 5px; }
+  .dot { width: 6px; height: 6px; border-radius: 50%; background: rgba(255,255,255,.2); transition: all .2s; cursor: pointer; }
+  .dot.active { background: #3B82F6; width: 18px; border-radius: 3px; }
+
+  /* Lang toggle */
+  #lang-toggle { position: fixed; top: 20px; right: 24px; z-index: 100; display: flex; gap: 2px; background: rgba(255,255,255,.08); border-radius: 8px; padding: 3px; border: 1px solid rgba(255,255,255,.1); }
+  .lang-btn { font-size: 11px; font-weight: 600; padding: 4px 10px; border-radius: 6px; cursor: pointer; border: none; background: none; color: #64748B; transition: all .15s; }
+  .lang-btn.active { background: #3B82F6; color: white; }
+
+  #slide-label { position: fixed; top: 20px; left: 24px; z-index: 100; font-size: 11px; color: #475569; font-weight: 600; letter-spacing: .06em; text-transform: uppercase; }
+
+  .pill { display: inline-flex; align-items: center; gap: 6px; padding: 5px 12px; border-radius: 100px; font-size: 12px; font-weight: 600; }
+  .card-dark { background: rgba(255,255,255,.06); border-radius: 16px; padding: 20px; border: 1px solid rgba(255,255,255,.1); }
+  .screen-frame { border-radius: 12px; overflow: hidden; box-shadow: 0 20px 60px rgba(0,0,0,.4); border: 1px solid rgba(255,255,255,.12); }
+  .conf-bar { height: 4px; border-radius: 2px; background: rgba(255,255,255,.1); overflow: hidden; }
+  .conf-fill { height: 100%; border-radius: 2px; background: linear-gradient(90deg,#3B82F6,#6366F1); }
+
+  @keyframes slideUp { from{opacity:0;transform:translateY(14px)} to{opacity:1;transform:none} }
+  .anim-1 { animation: slideUp .45s .05s both; }
+  .anim-2 { animation: slideUp .45s .15s both; }
+  .anim-3 { animation: slideUp .45s .25s both; }
+</style>
+</head>
+<body>
+
+<div id="lang-toggle">
+  <button class="lang-btn active" onclick="setLang('en')">EN</button>
+  <button class="lang-btn" onclick="setLang('de')">DE</button>
+</div>
+<div id="slide-label">SmAArt City IoT</div>
+<div id="nav">
+  <button onclick="prevSlide()">
+    <svg width="18" height="18" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"/></svg>
+  </button>
+  <span id="slide-counter">1 / 6</span>
+  <button onclick="nextSlide()">
+    <svg width="18" height="18" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/></svg>
+  </button>
+</div>
+<div id="dots"></div>
+
+<!-- ================================================================ SLIDES ================================================================ -->
+
+<!-- 1. TITLE -->
+<div class="slide slide-dark active" data-slide="1">
+  <div class="flex-1 flex flex-col items-center justify-center px-16 text-center">
+    <div class="anim-1 mb-6">
+      <div class="inline-flex items-center gap-2 px-4 py-2 rounded-full text-xs font-semibold mb-8" style="background:rgba(59,130,246,.15);color:#60A5FA;border:1px solid rgba(59,130,246,.3)">
+        <span class="w-1.5 h-1.5 rounded-full bg-blue-400 animate-pulse inline-block"></span>
+        Hackathon 2025 · Smart City Challenge
+      </div>
+      <h1 style="font-size:68px;font-weight:800;line-height:1.05;letter-spacing:-.03em">
+        <span class="gradient-text">Sensor-SmAArt</span><br>
+        <span style="color:white">City</span>
+      </h1>
+    </div>
+    <p class="anim-2 text-xl text-slate-400 max-w-xl mt-4 leading-relaxed">
+      <span class="en">Intelligent IoT operations for modern city infrastructure — real-time monitoring, predictive diagnostics & maintenance workflows.</span>
+      <span class="de hidden">Intelligenter IoT-Betrieb für moderne Stadtinfrastruktur — Echtzeit-Monitoring, prädiktive Diagnostik & Wartungsworkflows.</span>
+    </p>
+    <div class="anim-3 flex items-center gap-4 mt-10">
+      <div class="pill" style="background:rgba(16,185,129,.12);color:#34D399;border:1px solid rgba(16,185,129,.25)">🔒 AES-128 LoRaWAN</div>
+      <div class="pill" style="background:rgba(99,102,241,.12);color:#A5B4FC;border:1px solid rgba(99,102,241,.25)">📡 122 <span class="en">Sensors</span><span class="de hidden">Sensoren</span></div>
+      <div class="pill" style="background:rgba(245,158,11,.12);color:#FCD34D;border:1px solid rgba(245,158,11,.25)">🏙️ Aalen, BW</div>
+    </div>
+  </div>
+  <div style="height:80px"></div>
+</div>
+
+<!-- 2. PROBLEM -->
+<div class="slide slide-dark" data-slide="2">
+  <div class="flex-1 flex flex-col px-20 justify-center">
+    <div class="anim-1 mb-8">
+      <p class="text-xs font-semibold text-blue-400 uppercase tracking-widest mb-3">
+        <span class="en">The Challenge</span><span class="de hidden">Die Herausforderung</span>
+      </p>
+      <h2 style="font-size:40px;font-weight:800;color:white;line-height:1.1">
+        <span class="en">Cities deploy sensors —<br><span class="gradient-text">without visibility</span></span>
+        <span class="de hidden">Städte setzen Sensoren ein —<br><span class="gradient-text">ohne Übersicht</span></span>
+      </h2>
+    </div>
+    <div class="grid grid-cols-3 gap-5 anim-2">
+      <div class="card-dark">
+        <div class="text-3xl mb-3">🔋</div>
+        <p class="text-white font-semibold mb-1 text-sm"><span class="en">Battery blind spots</span><span class="de hidden">Batterie-Blindstellen</span></p>
+        <p class="text-slate-400 text-xs leading-relaxed"><span class="en">No tracking → sensors die unexpectedly. Standard monitoring misses LoRaWAN's multi-year lifespan.</span><span class="de hidden">Kein Tracking → Sensoren fallen unerwartet aus. Standard-Monitoring ignoriert die jahrelange LoRaWAN-Laufzeit.</span></p>
+      </div>
+      <div class="card-dark">
+        <div class="text-3xl mb-3">🚨</div>
+        <p class="text-white font-semibold mb-1 text-sm"><span class="en">False alarms</span><span class="de hidden">Fehlalarme</span></p>
+        <p class="text-slate-400 text-xs leading-relaxed"><span class="en">One missed packet ≠ offline sensor. Teams waste hours chasing non-issues without context.</span><span class="de hidden">Ein verlorenes Paket ≠ ausgefallener Sensor. Ohne Kontext verschwenden Teams Stunden mit Nicht-Problemen.</span></p>
+      </div>
+      <div class="card-dark">
+        <div class="text-3xl mb-3">📋</div>
+        <p class="text-white font-semibold mb-1 text-sm"><span class="en">No workflow</span><span class="de hidden">Kein Workflow</span></p>
+        <p class="text-slate-400 text-xs leading-relaxed"><span class="en">Issues are noticed — but never assigned, tracked or resolved. Knowledge lives in inboxes.</span><span class="de hidden">Probleme werden bemerkt — aber nie zugewiesen, verfolgt oder gelöst. Wissen lebt in Posteingängen.</span></p>
+      </div>
+    </div>
+  </div>
+  <div style="height:80px"></div>
+</div>
+
+<!-- 3. DASHBOARD LIVE -->
+<div class="slide slide-dark" data-slide="3">
+  <div class="flex-1 flex flex-col px-16 pt-12 pb-20">
+    <div class="anim-1 mb-4 flex items-end justify-between">
+      <div>
+        <p class="text-xs font-semibold text-blue-400 uppercase tracking-widest mb-1">
+          <span class="en">Live Platform</span><span class="de hidden">Live-Plattform</span>
+        </p>
+        <h2 style="font-size:32px;font-weight:800;color:white">
+          <span class="en">One platform. Full visibility.</span><span class="de hidden">Eine Plattform. Volle Übersicht.</span>
+        </h2>
+      </div>
+      <div class="flex gap-2">
+        <div class="pill" style="background:rgba(16,185,129,.12);color:#34D399;border:1px solid rgba(16,185,129,.2)">🟢 ~100 Online</div>
+        <div class="pill" style="background:rgba(245,158,11,.12);color:#FCD34D;border:1px solid rgba(245,158,11,.2)">🟡 ~12 Unstable</div>
+        <div class="pill" style="background:rgba(239,68,68,.12);color:#FCA5A5;border:1px solid rgba(239,68,68,.2)">🔴 ~10 Offline</div>
+      </div>
+    </div>
+    <div class="anim-2 flex-1 screen-frame">
+      <img src="assets/screenshots/index.png" alt="Dashboard" style="width:100%;height:100%;object-fit:cover;object-position:top">
+    </div>
+  </div>
+</div>
+
+<!-- 4. SMART FEATURES -->
+<div class="slide slide-dark" data-slide="4">
+  <div class="flex-1 flex items-center px-20 gap-12">
+    <!-- Left: feature list -->
+    <div class="flex-1 anim-1 space-y-4">
+      <p class="text-xs font-semibold text-blue-400 uppercase tracking-widest mb-2">
+        <span class="en">What makes it smart</span><span class="de hidden">Was es intelligent macht</span>
+      </p>
+      <h2 style="font-size:36px;font-weight:800;color:white;line-height:1.15" class="mb-6">
+        <span class="en">Three innovations,<br><span class="gradient-text">one platform</span></span>
+        <span class="de hidden">Drei Innovationen,<br><span class="gradient-text">eine Plattform</span></span>
+      </h2>
+      <div class="space-y-3">
+        <div class="card-dark flex items-start gap-4">
+          <span class="text-2xl mt-0.5">🔋</span>
+          <div>
+            <p class="text-white font-semibold text-sm"><span class="en">Battery Intelligence</span><span class="de hidden">Batterie-Intelligenz</span></p>
+            <p class="text-slate-400 text-xs mt-0.5"><span class="en">Voltage → % conversion with lifetime estimation in months/years. Thresholds: &gt;30% healthy · 15–30% plan · &lt;15% urgent.</span><span class="de hidden">Spannung → % mit Lebensdauerabschätzung. Schwellen: &gt;30% gesund · 15–30% planen · &lt;15% dringend.</span></p>
+          </div>
+        </div>
+        <div class="card-dark flex items-start gap-4">
+          <span class="text-2xl mt-0.5">🧠</span>
+          <div>
+            <p class="text-white font-semibold text-sm"><span class="en">Root Cause AI</span><span class="de hidden">Ursachenanalyse</span></p>
+            <p class="text-slate-400 text-xs mt-0.5"><span class="en">Every failure classified: Battery · Connectivity · Gateway · Hardware · Software — each with a confidence score.</span><span class="de hidden">Jeder Ausfall klassifiziert: Batterie · Konnektivität · Gateway · Hardware · Software — mit Konfidenzwert.</span></p>
+          </div>
+        </div>
+        <div class="card-dark flex items-start gap-4">
+          <span class="text-2xl mt-0.5">🟡</span>
+          <div>
+            <p class="text-white font-semibold text-sm"><span class="en">False Positive Prevention</span><span class="de hidden">Falschalarme verhindern</span></p>
+            <p class="text-slate-400 text-xs mt-0.5"><span class="en">Three states: Online · Unstable (missed packets, not yet critical) · Offline (confirmed, root cause triggered).</span><span class="de hidden">Drei Zustände: Online · Unstable (verpasste Pakete) · Offline (bestätigt, Ursache ausgelöst).</span></p>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!-- Right: alerts screenshot -->
+    <div class="flex-1 anim-2 screen-frame" style="max-height: calc(100vh - 160px)">
+      <img src="assets/screenshots/alerts.png" alt="Alerts" style="width:100%;height:100%;object-fit:cover;object-position:top">
+    </div>
+  </div>
+  <div style="height:80px"></div>
+</div>
+
+<!-- 5. TECH STACK -->
+<div class="slide slide-dark" data-slide="5">
+  <div class="flex-1 flex flex-col items-center justify-center px-20">
+    <div class="anim-1 text-center mb-8">
+      <p class="text-xs font-semibold text-blue-400 uppercase tracking-widest mb-3">
+        <span class="en">Technical Architecture</span><span class="de hidden">Technische Architektur</span>
+      </p>
+      <h2 style="font-size:38px;font-weight:800;color:white">
+        <span class="en">Built for real-world deployment</span>
+        <span class="de hidden">Für den echten Einsatz gebaut</span>
+      </h2>
+    </div>
+    <div class="grid grid-cols-4 gap-4 w-full anim-2 mb-5">
+      <div class="card-dark text-center">
+        <div class="text-3xl mb-2">📡</div>
+        <p class="text-white font-semibold text-sm mb-1">LoRaWAN</p>
+        <p class="text-slate-500 text-xs"><span class="en">Low-power, long-range via The Things Industries</span><span class="de hidden">Energiesparend, Langstrecke via TTI</span></p>
+      </div>
+      <div class="card-dark text-center">
+        <div class="text-3xl mb-2">🐍</div>
+        <p class="text-white font-semibold text-sm mb-1">Python / Flask</p>
+        <p class="text-slate-500 text-xs"><span class="en">REST API + SQLAlchemy + SQLite</span><span class="de hidden">REST-API + SQLAlchemy + SQLite</span></p>
+      </div>
+      <div class="card-dark text-center">
+        <div class="text-3xl mb-2">⚡</div>
+        <p class="text-white font-semibold text-sm mb-1">Vanilla JS</p>
+        <p class="text-slate-500 text-xs"><span class="en">Zero-dependency, no build step</span><span class="de hidden">Keine Abhängigkeiten, kein Build</span></p>
+      </div>
+      <div class="card-dark text-center">
+        <div class="text-3xl mb-2">🗺️</div>
+        <p class="text-white font-semibold text-sm mb-1">Leaflet + Chart.js</p>
+        <p class="text-slate-500 text-xs"><span class="en">City maps & trend charts</span><span class="de hidden">Stadtkarten & Trendcharts</span></p>
+      </div>
+    </div>
+    <div class="w-full anim-3">
+      <div class="card-dark flex items-center gap-5">
+        <div class="text-2xl">🔄</div>
+        <p class="text-slate-400 text-xs">
+          <span class="en">Sensor → LoRaWAN Gateway → The Things Industries → MQTT → Python Ingestion → SQLite → REST API → Dashboard</span>
+          <span class="de hidden">Sensor → LoRaWAN-Gateway → The Things Industries → MQTT → Python-Ingest → SQLite → REST-API → Dashboard</span>
+        </p>
+      </div>
+    </div>
+  </div>
+  <div style="height:80px"></div>
+</div>
+
+<!-- 6. CLOSING -->
+<div class="slide slide-dark" data-slide="6">
+  <div class="flex-1 flex flex-col items-center justify-center px-16 text-center">
+    <div class="anim-1 mb-8">
+      <p class="text-xs font-semibold text-blue-400 uppercase tracking-widest mb-4">
+        <span class="en">What's Next</span><span class="de hidden">Nächste Schritte</span>
+      </p>
+      <h2 style="font-size:52px;font-weight:800;color:white;line-height:1.1" class="mb-4">
+        <span class="en">Ready to <span class="gradient-text">scale</span></span>
+        <span class="de hidden">Bereit zum <span class="gradient-text">Skalieren</span></span>
+      </h2>
+      <p class="text-slate-400 text-lg max-w-xl mx-auto"><span class="en">Architecture supports hundreds of sensors across multiple cities — today: Aalen, 122 sensors, 6 districts.</span><span class="de hidden">Die Architektur trägt hunderte Sensoren in mehreren Städten — heute: Aalen, 122 Sensoren, 6 Stadtteile.</span></p>
+    </div>
+    <div class="grid grid-cols-3 gap-5 w-full max-w-2xl anim-2">
+      <div class="card-dark text-left">
+        <p class="text-blue-400 font-bold text-xs uppercase tracking-wide mb-2">v2.0</p>
+        <p class="text-white font-semibold text-sm mb-1"><span class="en">Predictive ML</span><span class="de hidden">Prädiktives ML</span></p>
+        <p class="text-slate-500 text-xs"><span class="en">Predict failures 2 weeks ahead</span><span class="de hidden">Ausfälle 2 Wochen im Voraus vorhersagen</span></p>
+      </div>
+      <div class="card-dark text-left">
+        <p class="text-purple-400 font-bold text-xs uppercase tracking-wide mb-2">v2.5</p>
+        <p class="text-white font-semibold text-sm mb-1"><span class="en">Mobile App</span><span class="de hidden">Mobile App</span></p>
+        <p class="text-slate-500 text-xs"><span class="en">Technician app with QR code scanning</span><span class="de hidden">Techniker-App mit QR-Code-Scan</span></p>
+      </div>
+      <div class="card-dark text-left">
+        <p class="text-emerald-400 font-bold text-xs uppercase tracking-wide mb-2">v3.0</p>
+        <p class="text-white font-semibold text-sm mb-1"><span class="en">Multi-City</span><span class="de hidden">Multi-Stadt</span></p>
+        <p class="text-slate-500 text-xs"><span class="en">White-label for Baden-Württemberg</span><span class="de hidden">White-Label für Baden-Württemberg</span></p>
+      </div>
+    </div>
+    <div class="anim-3 mt-8">
+      <div class="inline-flex items-center gap-3 px-6 py-3 rounded-2xl" style="background:rgba(59,130,246,.12);border:1px solid rgba(59,130,246,.25)">
+        <span class="w-2 h-2 rounded-full bg-blue-400 animate-pulse inline-block"></span>
+        <span class="text-blue-300 font-medium text-sm"><span class="en">Live demo → localhost:8080/frontend</span><span class="de hidden">Live-Demo → localhost:8080/frontend</span></span>
+      </div>
+    </div>
+  </div>
+  <div style="height:80px"></div>
+</div>
+
+<!-- ================================================================ JS ================================================================ -->
+<script>
+  const TOTAL = 6;
+  let current = 1;
+  let lang = 'en';
+
+  const dotsEl = document.getElementById('dots');
+  for (let i = 1; i <= TOTAL; i++) {
+    const d = document.createElement('div');
+    d.className = 'dot' + (i === 1 ? ' active' : '');
+    d.onclick = () => goTo(i);
+    dotsEl.appendChild(d);
+  }
+
+  function goTo(n) {
+    if (n < 1 || n > TOTAL) return;
+    document.querySelectorAll('.slide').forEach(s => {
+      const num = +s.dataset.slide;
+      s.classList.remove('active', 'prev');
+      if (num === n) s.classList.add('active');
+      else if (num < n) s.classList.add('prev');
+    });
+    document.querySelectorAll('.dot').forEach((d, i) => d.classList.toggle('active', i + 1 === n));
+    document.getElementById('slide-counter').textContent = `${n} / ${TOTAL}`;
+    current = n;
+  }
+
+  function nextSlide() { goTo(current + 1); }
+  function prevSlide() { goTo(current - 1); }
+
+  document.addEventListener('keydown', e => {
+    if (e.key === 'ArrowRight' || e.key === 'ArrowDown' || e.key === ' ') { e.preventDefault(); nextSlide(); }
+    if (e.key === 'ArrowLeft'  || e.key === 'ArrowUp')                    { e.preventDefault(); prevSlide(); }
+  });
+
+  let tx = 0;
+  document.addEventListener('touchstart', e => { tx = e.touches[0].clientX; });
+  document.addEventListener('touchend',   e => {
+    const dx = e.changedTouches[0].clientX - tx;
+    if (Math.abs(dx) > 50) dx < 0 ? nextSlide() : prevSlide();
+  });
+
+  function setLang(l) {
+    lang = l;
+    document.querySelectorAll('.en').forEach(el => el.classList.toggle('hidden', l !== 'en'));
+    document.querySelectorAll('.de').forEach(el => el.classList.toggle('hidden', l !== 'de'));
+    document.querySelectorAll('.lang-btn').forEach(btn => btn.classList.toggle('active', btn.textContent.toLowerCase() === l));
+  }
+
+  setLang('en');
+</script>
+</body>
+</html>
