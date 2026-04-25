@@ -1,0 +1,70 @@
+import csv
+from datetime import datetime
+
+# 1. Define the mappings for heterogeneous sensors
+# Format: "Raw_CSV_Header": ("Standardized_Parameter_Name", "Unit")
+SENSOR_MAPPINGS = {
+    "Sensor": {
+        "BatV": ("battery_voltage", "V"),
+        "temp_SOIL": ("soil_temperature", "°C"),
+        "water_SOIL": ("soil_moisture", "%"),
+        "conduct_SOIL": ("soil_conductivity", "µS/cm") # Assuming microSiemens per centimeter
+    }
+    
+}
+
+def normalize_csv(input_filepath, output_filepath, sensor_id):
+    """
+    Reads a wide-format CSV, normalizes the data, and writes to a long-format CSV.
+    """
+    if sensor_id not in SENSOR_MAPPINGS:
+        raise ValueError(f"No mapping found for {sensor_id}")
+    
+    mapping = SENSOR_MAPPINGS[sensor_id]
+    normalized_data = []
+
+    # 2. Read the raw, wide-format CSV
+    with open(input_filepath, mode='r', encoding='utf-8') as infile:
+        # Use DictReader to automatically map headers to values
+        reader = csv.DictReader(infile)
+        
+        for row in reader:
+            # Safely extract and format timestamp
+            raw_time = row.get("Timestamp")
+            if not raw_time:
+                continue
+                
+            try:
+                # Assuming input is 'YYYY-MM-DD HH:MM:SS'
+                dt_obj = datetime.strptime(raw_time, '%Y-%m-%d %H:%M:%S')
+                iso_time = dt_obj.isoformat()
+            except ValueError:
+                iso_time = raw_time # Fallback if already formatted
+            
+            # 3. Iterate through the mapped columns
+            for raw_header, (param_name, unit) in mapping.items():
+                val = row.get(raw_header)
+                
+                # Skip empty, null, or whitespace-only values
+                if val is not None and str(val).strip() != "":
+                    normalized_data.append({
+                        "timestamp": iso_time,
+                        "sensor_id": sensor_id,
+                        "parameter": param_name,
+                        "value": float(val),
+                        "unit": unit
+                    })
+
+    # 4. Write the normalized, long-format CSV
+    if normalized_data:
+        headers = ["timestamp", "sensor_id", "parameter", "value", "unit"]
+        
+        with open(output_filepath, mode='w', newline='', encoding='utf-8') as outfile:
+            writer = csv.DictWriter(outfile, fieldnames=headers)
+            writer.writeheader()
+            writer.writerows(normalized_data)
+            
+        print(f"Successfully normalized {len(normalized_data)} data points to {output_filepath}")
+    else:
+        print("No valid data found to normalize.")
+
