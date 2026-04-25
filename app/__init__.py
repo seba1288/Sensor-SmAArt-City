@@ -8,22 +8,24 @@ def create_app(config_class=DevelopmentConfig):
     """Application factory."""
     app = Flask(__name__)
     app.config.from_object(config_class)
-    
+
     # Initialize extensions
     db.init_app(app)
-    
+
     # Create database tables
     with app.app_context():
         db.create_all()
-    
+
     # Register blueprints
     from app.routes import auth_bp, sensor_bp, dashboard_bp, api_bp
     from app.routes.applications import apps_bp
+    from app.routes.api_v2 import api_v2_bp
     app.register_blueprint(auth_bp)
     app.register_blueprint(sensor_bp)
     app.register_blueprint(dashboard_bp)
     app.register_blueprint(api_bp)
     app.register_blueprint(apps_bp)
+    app.register_blueprint(api_v2_bp)
     
     # Register CLI commands
     register_cli_commands(app)

@@ -1,3 +1,12 @@
+# Sensitive credentials – never commit
+ingestion_worker/credentials.json
+
+# Local database
+iot_sensors.db
+
+# macOS metadata
+.DS_Store
+
 # Byte-compiled / optimized / DLL files
 __pycache__/
 *.py[codz]
