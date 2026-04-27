@@ -1,3 +1,0 @@
-"""
-Ingestion worker package.
-"""
